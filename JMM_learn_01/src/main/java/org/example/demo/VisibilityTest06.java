@@ -1,5 +1,7 @@
 package org.example.demo;
 
+import sun.misc.Unsafe;
+
 import java.util.concurrent.locks.LockSupport;
 
 /**
@@ -41,7 +43,7 @@ public class VisibilityTest06 {
         while (flag) {
             i++;
             /**
-             * 颁发许可
+             * 颁发许可 - 进入源码看下，本质是 UnSafe 建立内存屏障
              */
             LockSupport.unpark(Thread.currentThread());
         }

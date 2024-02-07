@@ -40,6 +40,7 @@ public class VisibilityTest05 {
             i++;
             /**
              * 底层也是使用了内存屏障的方法
+             * 进去看一下源码：可以知道里面使用了 synchronized
              */
             System.out.println(i);
         }
