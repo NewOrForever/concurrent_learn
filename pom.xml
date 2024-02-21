@@ -8,6 +8,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>learn_01_JMM</module>
+    <module>learn_02_jdk1.8_source</module>
   </modules>
 
 
