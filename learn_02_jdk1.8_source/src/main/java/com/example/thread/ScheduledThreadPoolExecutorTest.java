@@ -47,12 +47,12 @@ public class ScheduledThreadPoolExecutorTest {
          * schedule：延迟 delay 时间后只执行一次任务
          * scheduleWithFixedDelay：第一次执行任务延迟 initialDelay 时间，之后每次执行任务间隔 delay 时间
          *      - 该方式构建的 {@link java.util.concurrent.ScheduledThreadPoolExecutor.ScheduledFutureTask} 中的 period 为 -delay 时间
-         *      - {@link ScheduledThreadPoolExecutor.ScheduledFutureTask#setNextRunTime()} 中计算下次执行时间时，使用的是 当前时间 + (-period)
-         *      - 也就是说，下次执行时间需要上次任务执行完成后，当前时间 + delay 时间 才会执行下次任务
+         *      - {@link ScheduledThreadPoolExecutor.ScheduledFutureTask#setNextRunTime()} 中计算下次开始执行时间时，使用的是 当前时间 + (-period)
+         *      - 也就是说，下次开始执行时间需要上次任务执行完成后，当前时间 + delay 时间 才会执行下次任务
          * scheduleAtFixedRate：第一次执行任务延迟 initialDelay 时间，之后每次执行任务触发时间为上次任务触发时间 + period 时间
          *      - 该方式构建的 {@link java.util.concurrent.ScheduledThreadPoolExecutor.ScheduledFutureTask} 中的 period 为正数
-         *      - {@link ScheduledThreadPoolExecutor.ScheduledFutureTask#setNextRunTime()} 中计算下次执行时间时，使用的是 上次任务执行时间 + period
-         *      - 也就是说，下次执行时间需要上次任务执行完成后，上次任务执行时间 + period 时间 才会执行下次任务
+         *      - {@link ScheduledThreadPoolExecutor.ScheduledFutureTask#setNextRunTime()} 中计算下次开始执行时间时，使用的是 上次任务开始执行时间 + period
+         *      - 也就是说，下次执行时间需要上次任务执行完成后，上次任务开始执行时间 + period 时间 才会执行下次任务
          *      - 但是如果任务执行时间超过 period 时间，下次任务的time 还是 lastTime + period < now ，会立即从队列中取出执行不需要再等待了
          */
 //        scheduledExecutorService.schedule(task, 2, TimeUnit.SECONDS);
