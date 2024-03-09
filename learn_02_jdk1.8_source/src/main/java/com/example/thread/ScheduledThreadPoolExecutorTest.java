@@ -82,9 +82,14 @@ class ScheduledTask implements Runnable {
         atomicInteger.incrementAndGet();
         System.out.println("executing：" + name + ", Current Seconds : " + new Date().getSeconds());
         try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new NullPointerException();
+        } catch (NullPointerException e) {
+            System.out.println("发生异常啦");
         }
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }
