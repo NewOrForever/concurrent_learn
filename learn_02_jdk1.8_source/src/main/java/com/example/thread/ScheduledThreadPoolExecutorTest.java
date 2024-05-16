@@ -1,6 +1,8 @@
 package com.example.thread;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -19,6 +21,15 @@ public class ScheduledThreadPoolExecutorTest {
         queue[0] = "1";
         queue[1] = "2";
         System.out.printf(queue[0]);
+
+
+        Object[] objects = new Object[10];
+        objects[0] = new HashMap<>();
+        objects[1] = new ArrayList<>();
+        Object firstObject = objects[0];
+        firstObject = null;
+        System.out.println(objects[0]);
+
 
         testScheduledThreadPoolExecutor();
     }
@@ -81,6 +92,12 @@ class ScheduledTask implements Runnable {
     public void run() {
         atomicInteger.incrementAndGet();
         System.out.println("executing：" + name + ", Current Seconds : " + new Date().getSeconds());
+        /**
+         * @see FutureTask#runAndReset()
+         * @see FutureTask#run()
+         * 任务执行时如果发生异常，会被捕获，不会抛出异常，且后续的任务不会继续执行
+         * 所以为了避免任务执行异常后出现上述问题，需要在任务内部捕获异常，不要让异常抛出
+         */
         try {
             throw new NullPointerException();
         } catch (NullPointerException e) {
