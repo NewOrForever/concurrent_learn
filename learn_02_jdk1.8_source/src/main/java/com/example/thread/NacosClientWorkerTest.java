@@ -55,7 +55,7 @@ public class NacosClientWorkerTest {
 //        });
 
         /**
-         * 1. 3 秒后开始执行，每 10 秒执行一次
+         * 1. 3 秒后开始执行，每 5 秒执行一次
          */
         executor.scheduleWithFixedDelay(new Runnable() {
             @Override
@@ -66,23 +66,29 @@ public class NacosClientWorkerTest {
                     e.printStackTrace();
                 }
             }
-        }, 3L, 10L, TimeUnit.SECONDS);
+        }, 3L, 5L, TimeUnit.SECONDS);
     }
 
     private void checkConfigInfo() {
         int taskId = taskIdNumber.incrementAndGet();
         System.out.println("checkConfigInfo execute by " + Thread.currentThread().getName() + " at " + new Date().getSeconds());
         /**
-         * 队列 - 核心线程未满 - addWorker - 执行 task
-         *                                                              |-----> LongPollingRunnable.run()
-         *                                                              -> executorService.execute(this)
-         *                                                                                                  |-----> 加入队列 - 核心线程满了，不做任何操作
-         *                                                             |<-------------------------------------------------------|
-         *                                                         getTask() - 从队列中取出任务
-         *                                                            |-----> 执行 task -> LongPollingRunnable.run()
-         *                                                            ...... 这个任务会一直执行下去
+         * 长轮询任务的线程池核心线程数为当前服务器的 CPU 核心数 - 16 (我的电脑是 16核心)
+         * 长轮询任务的原理，以及每次重新提交自己后当前线程在何时释放：
+         * task
+         *   |-----> 加入延迟队列
+         *                        |-----> addWorker 创建线程 Thread01
+         *                                                         |-----> Thread01 执行 task -> LongPollingRunnable.run()
+         *                                                         -> executorService.execute(this) 重新提交自己到线程池
+         *                                                                                           |-----> 加入延迟队列
+         *                                                                                                                  |-----> addWorker 创建线程 Thread02
+         *                                                                                                                  =======> Thread02.start() 新线程 runWorker 中从延迟队列中取出任务执行
+         *                                                                                                                  |-----> Thread02.start() 线程2 start 时，Thread01的任务就完成了
+         *                                                                                                                  |=======> Thread01 线程释放，去延迟队列中和别的线程抢任务
+         *
          */
         if (taskId <= 3){
+            System.out.println("第 " + taskId + " 次执行checkConfigInfo任务");
             executorService.execute(new LongPollingRunnable(taskId));
         }
     }

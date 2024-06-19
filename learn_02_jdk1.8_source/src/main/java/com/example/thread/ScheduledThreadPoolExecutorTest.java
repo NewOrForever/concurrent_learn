@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static java.lang.Thread.sleep;
+
 /**
  * ClassName:ScheduledThreadPoolExecutorTest
  * Package:com.example.thread
@@ -16,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Author:qs@1.com
  */
 public class ScheduledThreadPoolExecutorTest {
+    private static final AtomicInteger count = new AtomicInteger(1);
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         String[] queue = new String[10];
         queue[0] = "1";
@@ -31,7 +34,27 @@ public class ScheduledThreadPoolExecutorTest {
         System.out.println(objects[0]);
 
 
-        testScheduledThreadPoolExecutor();
+//        testScheduledThreadPoolExecutor();
+        testExecute();
+    }
+
+    /**
+     * 测试 {@link ExecutorService#execute(Runnable)} 方法如果任务执行异常，会被捕获，不会抛出异常，且后续的任务不会继续执行
+     */
+    public static  void testExecute() throws InterruptedException {
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
+
+        for (int i = 0; i < 100000; i++) {
+            System.out.println("add task " + i);
+            /**
+             * 我是用 while 循环不停的添加任务，测试线程池的执行情况
+             * - 测试发现如果execute 方法中以 Lambda 表达式或是匿名类的形式传入任务，当任务不停添加时会导致CPU 100%占用
+             * - 但是如果传入的是一个具体的类，不会出现这种情况，CPU 会有一定的占用率，但是不会达到 100%
+             */
+            scheduledExecutorService.execute(new ExecuteTask(i));
+        }
+
+        Thread.sleep(1000000);
     }
 
     private static void testScheduledThreadPoolExecutor() throws ExecutionException, InterruptedException {
@@ -65,6 +88,10 @@ public class ScheduledThreadPoolExecutorTest {
          *      - {@link ScheduledThreadPoolExecutor.ScheduledFutureTask#setNextRunTime()} 中计算下次开始执行时间时，使用的是 上次任务开始执行时间 + period
          *      - 也就是说，下次执行时间需要上次任务执行完成后，上次任务开始执行时间 + period 时间 才会执行下次任务
          *      - 但是如果任务执行时间超过 period 时间，下次任务的time 还是 lastTime + period < now ，会立即从队列中取出执行不需要再等待了
+         *
+         * 注意：这几个方法实际都可以认为是定时任务
+         *      - 不太适用于处理实际业务逻辑，因为会重复执行任务
+         *      - 实际业务逻辑处理，可以使用 {@link java.util.concurrent.ExecutorService#execute(Runnable)} 方法
          */
 //        scheduledExecutorService.schedule(task, 2, TimeUnit.SECONDS);
 //         scheduledExecutorService.scheduleWithFixedDelay(task, 1, 2, TimeUnit.SECONDS);
@@ -108,5 +135,24 @@ class ScheduledTask implements Runnable {
 //        } catch (InterruptedException e) {
 //            throw new RuntimeException(e);
 //        }
+    }
+
+}
+
+class ExecuteTask implements Runnable {
+    private int taskId = 0;
+
+    public ExecuteTask(int taskId) {
+        this.taskId = taskId;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("ExecuteTask " + taskId + " execute by " + Thread.currentThread().getName() + " at " + new Date().getSeconds());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
