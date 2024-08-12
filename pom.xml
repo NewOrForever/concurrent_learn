@@ -9,6 +9,7 @@
   <modules>
     <module>learn_01_JMM</module>
     <module>learn_02_jdk1.8_source</module>
+    <module>learn_03_thread</module>
   </modules>
 
 

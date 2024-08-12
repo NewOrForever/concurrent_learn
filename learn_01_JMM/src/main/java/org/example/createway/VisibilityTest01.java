@@ -1,25 +1,23 @@
-package org.example.demo;
+package org.example.createway;
 
 /**
  * ClassName:VisibilityTest
  * Package:com.learn.concurrent_program
  * Description: JMM 三大特性：可见性、原子性、有序性 <br/>
  * 这里对于 <b>可见性</b> 进行测试 <br/>
+ * <h1>解决方案1：共享变量使用 volatile 修饰（jvm 级的内存屏障）</h1>
+ *
  * @Date:2023/4/21 16:53
  * @Author:qs@1.com
  */
-public class VisibilityTest02 {
-    private boolean flag = true;
-
+public class VisibilityTest01 {
     /**
-     * 方案2：将局部变量 i 换成全局变量 count （int 类型 + volatile 修饰）
-     * 或者 直接 Integer 修饰 count
+     * 共享变量使用 volatile 修饰
      */
-    // private volatile int count = 0;
-    private Integer count = 0;
+    private volatile boolean flag = true;
 
     public static void main(String[] args) throws InterruptedException {
-        VisibilityTest02 test = new VisibilityTest02();
+        VisibilityTest01 test = new VisibilityTest01();
 
         Thread threadA = new Thread(() -> test.load(), "ThreadA");
         threadA.start();
@@ -38,10 +36,11 @@ public class VisibilityTest02 {
 
     private void load() {
         System.out.println(Thread.currentThread().getName() + "线程开始执行 ......");
+        int i = 0;
         while (flag) {
-            count++;
+            i++;
             // TODO 业务逻辑
         }
-        System.out.println(Thread.currentThread().getName() + "线程跳出循环，count=" + count);
+        System.out.println(Thread.currentThread().getName() + "线程跳出循环，i=" + i);
     }
 }

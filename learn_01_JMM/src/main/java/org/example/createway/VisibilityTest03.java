@@ -1,4 +1,4 @@
-package org.example.demo;
+package org.example.createway;
 
 /**
  * ClassName:VisibilityTest
@@ -8,15 +8,15 @@ package org.example.demo;
  * @Date:2023/4/21 16:53
  * @Author:qs@1.com
  */
-public class VisibilityTest04 {
+public class VisibilityTest03 {
     /**
-     * 方案四：释放时间片，切换上下文，加载上下文
-     * Thread.yield();
+     * 方案三：建立内存屏障
+     * UnsafeFactory.getUnsafe().storeFence();
      */
     private boolean flag = true;
 
     public static void main(String[] args) throws InterruptedException {
-        VisibilityTest04 test = new VisibilityTest04();
+        VisibilityTest03 test = new VisibilityTest03();
 
         Thread threadA = new Thread(() -> test.load(), "ThreadA");
         threadA.start();
@@ -39,9 +39,9 @@ public class VisibilityTest04 {
         while (flag) {
             i++;
             /**
-             * 释放时间片，上下文切换，加载上下文
+             * 内存屏障
              */
-            Thread.yield();
+            UnsafeFactory.getUnsafe().storeFence();
         }
         System.out.println(Thread.currentThread().getName() + "线程跳出循环，i=" + i);
     }

@@ -1,4 +1,4 @@
-package org.example.demo;
+package org.example.createway;
 
 /**
  * ClassName:VisibilityTest
@@ -8,15 +8,18 @@ package org.example.demo;
  * @Date:2023/4/21 16:53
  * @Author:qs@1.com
  */
-public class VisibilityTest03 {
-    /**
-     * 方案三：建立内存屏障
-     * UnsafeFactory.getUnsafe().storeFence();
-     */
+public class VisibilityTest02 {
     private boolean flag = true;
 
+    /**
+     * 方案2：将局部变量 i 换成全局变量 count （int 类型 + volatile 修饰）
+     * 或者 直接 Integer 修饰 count
+     */
+    // private volatile int count = 0;
+    private Integer count = 0;
+
     public static void main(String[] args) throws InterruptedException {
-        VisibilityTest03 test = new VisibilityTest03();
+        VisibilityTest02 test = new VisibilityTest02();
 
         Thread threadA = new Thread(() -> test.load(), "ThreadA");
         threadA.start();
@@ -35,14 +38,10 @@ public class VisibilityTest03 {
 
     private void load() {
         System.out.println(Thread.currentThread().getName() + "线程开始执行 ......");
-        int i = 0;
         while (flag) {
-            i++;
-            /**
-             * 内存屏障
-             */
-            UnsafeFactory.getUnsafe().storeFence();
+            count++;
+            // TODO 业务逻辑
         }
-        System.out.println(Thread.currentThread().getName() + "线程跳出循环，i=" + i);
+        System.out.println(Thread.currentThread().getName() + "线程跳出循环，count=" + count);
     }
 }

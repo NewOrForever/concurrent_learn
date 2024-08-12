@@ -1,4 +1,4 @@
-package org.example.demo;
+package org.example.createway;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

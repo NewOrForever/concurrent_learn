@@ -1,6 +1,6 @@
-package org.example.demo;
+package org.example.createway;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * ClassName:VisibilityTest
@@ -10,15 +10,15 @@ import java.util.concurrent.TimeUnit;
  * @Date:2023/4/21 16:53
  * @Author:qs@1.com
  */
-public class VisibilityTest07 {
+public class VisibilityTest06 {
     /**
-     * 方案七
-     *
+     * 方案六：颁发许可
+     *  LockSupport.unpark(Thread.currentThread());
      */
     private boolean flag = true;
 
     public static void main(String[] args) throws InterruptedException {
-        VisibilityTest07 test = new VisibilityTest07();
+        VisibilityTest06 test = new VisibilityTest06();
 
         Thread threadA = new Thread(() -> test.load(), "ThreadA");
         threadA.start();
@@ -40,31 +40,11 @@ public class VisibilityTest07 {
         int i = 0;
         while (flag) {
             i++;
-
-//            shortWait(1000000); // 可以
-//            shortWait(1000);       // 不可以
-
-            try {
-                /**
-                 * 内存屏障
-                 */
-                // Thread.sleep(1);
-//                TimeUnit.NANOSECONDS.sleep(1000);         // 可以
-                TimeUnit.MILLISECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            /**
+             * 颁发许可 - 进入源码看下，本质是 UnSafe 建立内存屏障
+             */
+            LockSupport.unpark(Thread.currentThread());
         }
         System.out.println(Thread.currentThread().getName() + "线程跳出循环，i=" + i);
     }
-
-    public static void shortWait(long interval) {
-        long start = System.nanoTime();
-        long end;
-        do {
-            end = System.nanoTime();
-        } while (start + interval >= end);
-    }
-
 }

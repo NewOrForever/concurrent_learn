@@ -1,23 +1,24 @@
-package org.example.demo;
+package org.example.createway;
 
 /**
  * ClassName:VisibilityTest
  * Package:com.learn.concurrent_program
  * Description: JMM 三大特性：可见性、原子性、有序性 <br/>
  * 这里对于 <b>可见性</b> 进行测试 <br/>
- * <h1>解决方案1：共享变量使用 volatile 修饰（jvm 级的内存屏障）</h1>
- *
+ * 这个是原始的有并发问题的版本
  * @Date:2023/4/21 16:53
  * @Author:qs@1.com
  */
-public class VisibilityTest01 {
+public class VisibilityTest {
+    private boolean flag = true;
     /**
-     * 共享变量使用 volatile 修饰
+     * 测试思路：
+     *  0. 全局变量 flag 的可见性测试
+     * 1. 创建两个线程 A, B
+     *    线程 A 执行 load -> while(flag)，等待 1s 线程B 开始执行 refresh -> flag 更新为 false，看 A 线程的 while 循环是否能打破
      */
-    private volatile boolean flag = true;
-
     public static void main(String[] args) throws InterruptedException {
-        VisibilityTest01 test = new VisibilityTest01();
+        VisibilityTest test = new VisibilityTest();
 
         Thread threadA = new Thread(() -> test.load(), "ThreadA");
         threadA.start();
