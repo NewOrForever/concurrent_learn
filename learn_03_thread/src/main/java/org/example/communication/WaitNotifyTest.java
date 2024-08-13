@@ -1,4 +1,4 @@
-package org.example.common_method.communication;
+package org.example.communication;
 
 /**
  * ClassName:WaitNotifyTest
