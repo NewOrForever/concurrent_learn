@@ -1,5 +1,6 @@
 package org.example.communication;
 
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.LockSupport;
 
 /**
