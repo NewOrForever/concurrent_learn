@@ -1,4 +1,4 @@
-package org.example.cas;
+package org.example.sync;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;

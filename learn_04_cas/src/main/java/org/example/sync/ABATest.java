@@ -1,4 +1,4 @@
-package org.example.cas;
+package org.example.sync;
 
 import lombok.extern.slf4j.Slf4j;
 

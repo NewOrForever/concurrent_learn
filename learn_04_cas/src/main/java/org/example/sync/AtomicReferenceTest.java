@@ -1,4 +1,4 @@
-package org.example.cas;
+package org.example.sync;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

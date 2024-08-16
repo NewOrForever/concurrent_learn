@@ -1,9 +1,5 @@
-package org.example.cas;
+package org.example.sync;
 
-import org.example.UnsafeFactory;
-import sun.misc.Unsafe;
-
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /**

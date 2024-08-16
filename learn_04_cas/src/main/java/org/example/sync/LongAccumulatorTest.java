@@ -1,4 +1,4 @@
-package org.example.cas;
+package org.example.sync;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
