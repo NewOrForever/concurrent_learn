@@ -12,6 +12,7 @@
     <module>learn_03_thread</module>
     <module>learn_04_cas</module>
     <module>learn_05_synchronized</module>
+    <module>learn_06_AQS</module>
   </modules>
 
 
