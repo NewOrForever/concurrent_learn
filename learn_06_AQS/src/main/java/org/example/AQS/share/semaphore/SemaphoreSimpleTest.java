@@ -1,4 +1,4 @@
-package org.example.AQS.semaphore;
+package org.example.AQS.share.semaphore;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,6 +8,7 @@ import java.util.concurrent.Semaphore;
  * ClassName:SemaphoreTest
  * Package:org.example.AQS.semaphore
  * Description: Semaphore 信号量测试demo
+ * Semaphore 是一把共享锁
  * 信号量是一个计数器，用来保护一个或多个共享资源的访问
  * 信号量的值为 n 时，表示有 n 个可用的资源
  * 当一个线程请求资源时，会将信号量的值减 1，当信号量的值为 0 时，表示没有可用的资源，此时线程会被阻塞，直到有线程释放资源，将信号量的值加 1

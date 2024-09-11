@@ -1,4 +1,4 @@
-package org.example.AQS.semaphore;
+package org.example.AQS.share.semaphore;
 
 import lombok.extern.slf4j.Slf4j;
 
