@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Package:org.example.AQS
  * Description: CyclicBarrier 示例
  * CyclicBarrier 可以实现让一组线程等待至某个状态（屏障点）之后再全部同时执行
- * 实现原理：
+ * 实现原理：通过 ReentrantLock 和 Condition 实现
  * 1. CyclicBarrier 内部有一个计数器，每个线程调用 await() 方法时，计数器减 1
  * 2. 当计数器的值为 0 时，表示所有线程都已经调用了 await() 方法，可以继续执行
  * 3. CyclicBarrier 的计数器可以重复使用，当计数器的值减到 0 之后，会重置为初始值
