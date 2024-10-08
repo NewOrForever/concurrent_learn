@@ -15,6 +15,7 @@
     <module>learn_05_synchronized</module>
     <module>learn_06_AQS</module>
     <module>learn_07_forkjoin</module>
+    <module>learn_08_callable_future</module>
   </modules>
 
 
