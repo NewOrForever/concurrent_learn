@@ -1,4 +1,4 @@
-package future;
+package org.example.future;
 
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;

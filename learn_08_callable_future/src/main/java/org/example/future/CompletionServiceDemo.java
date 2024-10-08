@@ -1,4 +1,4 @@
-package future;
+package org.example.future;
 
 import lombok.extern.slf4j.Slf4j;
 
