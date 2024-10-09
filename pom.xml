@@ -16,6 +16,7 @@
     <module>learn_06_AQS</module>
     <module>learn_07_forkjoin</module>
     <module>learn_08_callable_future</module>
+    <module>learn_09_disruptor</module>
   </modules>
 
 
