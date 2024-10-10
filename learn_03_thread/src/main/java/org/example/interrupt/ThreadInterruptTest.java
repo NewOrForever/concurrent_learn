@@ -20,11 +20,11 @@ public class ThreadInterruptTest {
 
     public static void main(String[] args) throws InterruptedException {
         // 测试线程中断机制
-        // testInterrupt();
+        testInterrupt();
         // 测试利用中断机制优雅的停止线程
         // testStopThreadGracefully();
         // 测试线程中有 sleep 能否感知到中断
-        testSleepInterrupt();
+        // testSleepInterrupt();
     }
 
     private static void testSleepInterrupt() throws InterruptedException {
@@ -37,7 +37,9 @@ public class ThreadInterruptTest {
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException e) {
-                        // 感知到中断，清除中断标记
+                        /**
+                         * 线程是可以感知到中断信号的，并且会抛出一个 `nterruptedException`异常，同时清除中断信号，将中断标记位设置成 false
+                          */
                         System.out.println("线程被中断：interrupted，当前线程中断标记：" + Thread.currentThread().isInterrupted());
                         /**
                          * 重新设置中断标记
@@ -78,7 +80,7 @@ public class ThreadInterruptTest {
         thread.interrupt();
     }
 
-    private static void testInterrupt() {
+    private static void testInterrupt() throws InterruptedException {
         System.out.println("begin");
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -97,7 +99,7 @@ public class ThreadInterruptTest {
                     if (Thread.currentThread().isInterrupted()) {
                         System.out.println("=========");
                     }
-                    if (i == 10) {
+                    if (i >= 200 && Thread.currentThread().isInterrupted()) {
                         break;
                     }
 
@@ -106,7 +108,8 @@ public class ThreadInterruptTest {
         });
 
         t1.start();
-        //不会停止线程t1,只会设置一个中断标志位 flag=true
+        Thread.sleep(1);
+        // 不会停止线程t1，只会设置一个中断标志位 flag=true
         t1.interrupt();
     }
 }

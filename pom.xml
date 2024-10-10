@@ -17,6 +17,7 @@
     <module>learn_07_forkjoin</module>
     <module>learn_08_callable_future</module>
     <module>learn_09_disruptor</module>
+    <module>learn_10_juc_design_pattern</module>
   </modules>
 
 
