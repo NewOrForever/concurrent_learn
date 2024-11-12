@@ -45,7 +45,7 @@ public class FutureTaskDemo2 {
         @Override
         public String call() throws Exception {
             System.out.println("T1:查询商品基本信息...");
-            TimeUnit.MILLISECONDS.sleep(50);
+            TimeUnit.MILLISECONDS.sleep(5000);
             return "商品基本信息查询成功";
         }
     }
