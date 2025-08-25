@@ -144,7 +144,9 @@ public class ThreadPoolExecutorTest {
         for (int i = 1; i < 1000; i++) {
             executorService.execute(new MyTask(i));
         }
+        // 关闭线程池，不再接受新任务，但会继续执行已提交的任务
         executorService.shutdown();
+        // 等待所有任务执行完毕，最多等待1天时间
         executorService.awaitTermination(1, TimeUnit.DAYS);
     }
 
